@@ -166,13 +166,17 @@ src_test() {
 		-F allow-integration-tests
 	)
 	cargo_src_compile "${args[@]}"
+
 	# https://github.com/rizsotto/Bear/issues/675
-	cargo_src_test "${args[@]}" -- \
-		--skip cases::intercept_posix::execv_interception \
-		--skip cases::intercept_posix::execve_interception \
-		--skip cases::intercept_posix::execvp_interception \
-		--skip cases::intercept_posix::execvpe_interception \
-		--skip cases::intercept_posix::execle_interception
+	local CARGO_SKIP_TESTS=(
+		cases::intercept_posix::execv_interception
+		cases::intercept_posix::execve_interception
+		cases::intercept_posix::execvp_interception
+		cases::intercept_posix::execvpe_interception
+		cases::intercept_posix::execle_interception
+	)
+
+	cargo_src_test ${args[@]}
 }
 
 src_install() {
